@@ -1,5 +1,5 @@
 module SR #(
-    parameter LEN
+    parameter LEN=8
 )(
     input CLK,
     input CFG,
