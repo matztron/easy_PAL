@@ -48,7 +48,7 @@ end
 
 // Testcase
 initial begin
-    $dumpfile("SIM.vcd");
+    $dumpfile("../output/SIM.vcd");
     $dumpvars(0, pal_tb);
 
     config_tb = 1'b1;
