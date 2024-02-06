@@ -12,3 +12,7 @@ OUTPUT_NUM = 3 # M
 #length of list has to be precisely M!
 # each equation cannot use more than N variables!
 OUTPUT_EQUATIONS=["I1 and I2 and I3 and I4", "I1", "I3"]
+
+# I want an equation of the form:
+# (I1 AND I2 AND I3) OR I2 ...
+# ...this is called Disjunctive normal form DNF!!!
