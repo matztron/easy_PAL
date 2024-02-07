@@ -1,7 +1,7 @@
 module PAL #(
-    parameter N = 8, // Number of Inputs
-    parameter M = 8, // NUmber of outputs
-    parameter P = 8 // Number of intermediate stages
+    parameter N = 4, // Number of Inputs
+    parameter M = 1, // NUmber of outputs
+    parameter P = 3 // Number of intermediate stages
 )(
     input CLK,
     input CFG,
@@ -17,7 +17,7 @@ module PAL #(
     // ---
     // FF_CHAIN
     //
-    // <MSB> [ OR | ... | OR | OR | AND | ... | AND | AND | AND-INV | ... | AND-INV | AND-INV ] <LSB>
+    // <MSB> [ OR | ... | OR | OR | AND | ... | AND | AND | AND-INV | ... | AND-INV | AND-INV ] <LSB> NO THIS IS WRONG! The inverted inputs are interleaved!
     //
     // When bit at INV is 1 then it is inverted!
     // ---
@@ -86,7 +86,7 @@ module PAL #(
             .STRIDE(P),
             .OPERATION("and")
         ) reduce_and_I (
-            .data_in(and_results),
+            .data_in(and_results & FF_CHAIN_AND[$signed():$signed()]),
             .reduced_out(INTERM_VARS[p])
         );
     end

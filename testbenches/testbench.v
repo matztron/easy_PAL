@@ -2,15 +2,20 @@ module pal_tb ();
 
 // configure these
 parameter NUM_INPUTS = 4;
-parameter NUM_OUPUTS = 3;
+parameter NUM_OUPUTS = 1;
 parameter NUM_INTERM_STAGES = 3;
 // ---
 
-reg clk_en_tb;
-reg clk_tb;
-wire clk_pal_tb;
+localparam BITSTREAM_LEN = $signed(2*NUM_INPUTS*NUM_INTERM_STAGES + NUM_INTERM_STAGES*NUM_OUPUTS);
 
-assign clk_pal_tb = clk_tb ^ clk_en_tb;
+//reg clk_en_tb;
+reg clk_tb; // this clock is unused...
+reg clk_pal_tb;
+
+wire [26:0] bitstream; // TODO: Update width by hand (according to assignment below)
+assign bitstream = 27'b100000100000100000100000100; // TODO: Update this by hand
+
+//assign clk_pal_tb = clk_tb ^ clk_en_tb;
 
 reg config_tb;
 reg [NUM_INPUTS-1:0] inputs_tb;
@@ -31,38 +36,47 @@ PAL #(
 // Clock source
 initial begin
     clk_tb=0;
-    forever #10 clk_tb=~clk_tb;
+    forever #2 clk_tb=~clk_tb;
+end
+
+integer i;
+// Bitstream programming
+initial begin
+    clk_pal_tb = 1'b0;
+
+    #10
+
+    for (i = 0; i < BITSTREAM_LEN; i = i + 1) begin
+        config_tb = bitstream[i];
+        clk_pal_tb = 1'b1;
+        #2;
+        clk_pal_tb = 1'b0;
+	end
+
+    clk_pal_tb = 1'b0;
 end
 
 /*initial begin
     // hehe...
-    forever #10 config_tb = clk_tb;
-end*/
-
-initial begin
-    // hehe...
    //forever #10 inputs_tb = {~clk_tb,clk_tb,~clk_tb,clk_tb,~clk_tb,clk_tb,~clk_tb,clk_tb};
    inputs_tb = 8'b0000_1111;
    forever #10 inputs_tb = ~inputs_tb;
-end
+end*/
 
 // Testcase
 initial begin
     $dumpfile("../output/SIM.vcd");
     $dumpvars(0, pal_tb);
 
-    config_tb = 1'b1;
+    #1000
 
-    clk_en_tb = 1'b1;
-
-    // INPUTS
-    //inputs_tb = 8'b1010_1010;
+    inputs_tb = 8'b0000_1111;
 
     #1000
 
-    clk_en_tb = 1'b0;
+    inputs_tb = 8'b0000_0000;
 
-    #4000
+    #1000
 
     $finish;
 end

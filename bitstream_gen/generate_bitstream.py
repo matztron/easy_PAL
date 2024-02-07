@@ -7,7 +7,7 @@ from pyeda.inter import *
 # shape of the PAL device
 INPUT_NUM = 4 # N
 INTERMED_SIG_NUM = 3 # P
-OUTPUT_NUM = 3 # M
+OUTPUT_NUM = 1 # M
 
 #---
 # Variables
@@ -31,7 +31,7 @@ Inputs = [I0, I1, I2, I3]
 # &: AND 
 
 # For now: There should only be one equation
-O0 = ~I0 & I1 & I2 & I3 
+O0 = I0 & I1 & I2 & I3 
 
 Equations = [O0] #, O1, O2]
 #---
@@ -212,29 +212,5 @@ print(line_str)
 
 print("---")
 print("Bitstream for verilog is:")
-print(bitstream[::-1])
-
-
-###############
-
-    # check if there are more operands than there are inputs?
-    # this check should probably be done earlier... :D
-
-    # check if there is a '~' -> this means we need to take the inverted version of the input
-
-    # read the operand (naming convention expects this naming: I0, I1, I2, ...)
-
-
-# Statically set all bits for the first output
-# there is no risk if too many are enabled
-# the Verilog code might yield 'X' values for AND gates that are not connected to inputs -> for those we need a pull-down of the inputs!
-
-
-# Visualize the configuration
-# maybe PyGame would be a good fit for that...
-# https://pythonprogramming.net/pygame-drawing-shapes-objects/
-
-# draw as many horizontal input wires as we have inputs
-# draw as many intermediate stages as we have intermediate stages
-# draw as many outputs as we have outputs
-# according to the bitstream: Draw a dot over the crossing of two wires
+#print(f"{len(bitstream)}'b{bitstream[::-1]}")
+print(f"{len(bitstream)}'b{bitstream}")
