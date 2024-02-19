@@ -76,17 +76,17 @@ module PAL #(
         for (n = 0; n < $signed(2*N); n = n + 1 ) begin : AND_GEN_LOOP_INNER
             //assign INTERM_VARS[p] = INTERM_VARS[p] ^ (FF_CHAIN[FF_CHAIN_AND_BASE_INDEX + p + n*P] ^ INPUT_VARS[n]);
             //assign and_cols[p][n] = INPUT_VARS[n] ^ FF_CHAIN[$signed(FF_CHAIN_AND_BASE_INDEX + p + n*P)];
-            CROSSPOINT cp (.data_in(INPUT_VARS_N[n]), .cfg_in(FF_CHAIN_AND[$signed(p + n*P)]), .data_out(and_results[p + n*P]));
+            CROSSPOINT #(.OP("and")) cp (.data_in(INPUT_VARS_N[n]), .cfg_in(FF_CHAIN_AND[$signed(p + n*P)]), .data_out(and_results[p + n*P]));
         end
 
         // Assign intermediate variables
         //assign INTERM_VARS[p] = &and_cols[p]; // AND reduction
         REDUCE #(
-            .LEN(N*P),
+            .LEN(2*N*P),
             .STRIDE(P),
             .OPERATION("and")
         ) reduce_and_I (
-            .data_in(and_results & FF_CHAIN_AND[$signed():$signed()]),
+            .data_in(and_results), // we are only allowed to take
             .reduced_out(INTERM_VARS[p])
         );
     end
@@ -100,7 +100,7 @@ module PAL #(
         for (p = 0; p < P; p = p + 1) begin : OR_GEN_LOOP_INNER
             //assign OUTPUT_VALS[m] = OUTPUT_VALS[m] | (FF_CHAIN[FF_CHAIN_OR_BASE_INDEX + p + m*P] ^ INTERM_VARS[p]);
             //assign or_rows[m][p] = INTERM_VARS[p] ^ FF_CHAIN[$signed(FF_CHAIN_OR_BASE_INDEX + p + m*P)];
-            CROSSPOINT cp (.data_in(INTERM_VARS[p]), .cfg_in(FF_CHAIN_OR[$signed(p + m*P)]), .data_out(or_results[p + m*P]));
+            CROSSPOINT #(.OP("or")) cp (.data_in(INTERM_VARS[p]), .cfg_in(FF_CHAIN_OR[$signed(p + m*P)]), .data_out(or_results[p + m*P]));
         end
 
         // Assign to outputs

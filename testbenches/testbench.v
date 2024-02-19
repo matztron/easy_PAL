@@ -78,6 +78,10 @@ initial begin
 
     #1000
 
+    inputs_tb = 8'b0000_0110;
+
+    #1000
+
     $finish;
 end
     

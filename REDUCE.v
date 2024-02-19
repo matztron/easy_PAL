@@ -28,7 +28,7 @@ module REDUCE #(
             // Bits. 0 1 1 0 0 1 0 1
             // ---------------------
             // AND   0 0 1 0 0 0 0 0 <- then use this one for reduction!
-            assign reduced_out = &data_stride;
+            assign reduced_out = &data_stride; //
         end else if (OPERATION == "or") begin
             assign reduced_out = |data_stride;
         end else begin
