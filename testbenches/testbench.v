@@ -13,7 +13,7 @@ reg clk_tb; // this clock is unused...
 reg clk_pal_tb;
 
 wire [26:0] bitstream; // TODO: Update width by hand (according to assignment below)
-assign bitstream = 27'b100000100000100000100000100; // TODO: Update this by hand
+assign bitstream = 27'b000000110000000100000010110; // TODO: Update this by hand
 
 //assign clk_pal_tb = clk_tb ^ clk_en_tb;
 
@@ -78,7 +78,7 @@ initial begin
 
     #1000
 
-    inputs_tb = 8'b0000_0110;
+    inputs_tb = 8'b0000_1010;
 
     #1000
 

@@ -31,7 +31,7 @@ Inputs = [I0, I1, I2, I3]
 # &: AND 
 
 # For now: There should only be one equation
-O0 = I0 & I1 & I2 & I3 
+O0 = ~I0 | I1 & ~(I2 & I3) 
 
 Equations = [O0] #, O1, O2]
 #---
@@ -155,8 +155,6 @@ for o in range(OUTPUT_NUM):
 
 # convert bitstream back to a string
 bitstream = "".join(bitstream)
-
-# TODO: Probably neccessary to reverse string to fit Verilog
 
 # print bitstream
 print("Bitstream is:")
